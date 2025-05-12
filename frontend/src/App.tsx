@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route Component={PageLayout}>
             <Route path="/" Component={HomePage} />
-            <Route path="/country/:id" Component={CountryDetails}/>
+            <Route path="/country/:code" Component={CountryDetails}/>
             <Route path="*" Component={() => <Navigate to="/" />} />
           </Route>
         </Routes>

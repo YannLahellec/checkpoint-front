@@ -6,17 +6,17 @@ export default function CountriesCard() {
   const { data } = useCountriesQuery();
   const navigate = useNavigate();
 
-  const handleClick = (countryId: number) => {
-    navigate(`/country/${countryId}`);
+  const handleClick = (code: string) => {
+    navigate(`/country/${code}`);
   };
 
   return (
-    <section className="flex flex-wrap justify-center mt-5 gap-4">
+    <section className="w-full max-w-7xl mx-auto px-4 py-6 flex flex-wrap justify-center mt-5 gap-4">
       {data?.countries.map((country) => (
         <Card
           key={country.id}
           className="p-4 cursor-pointer hover:shadow-lg transition-shadow"
-          onClick={() => handleClick(country.id)}
+          onClick={() => handleClick(country.code)}
         >
           <div>
             <CardTitle>{country.name}</CardTitle>
