@@ -4,16 +4,21 @@ import { Button } from "./ui/button";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAddCountryMutation } from "@/graphql/hooks";
+import { CountriesDocument, useAddCountryMutation } from "@/graphql/hooks";
+// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   code: z.string().length(2, "Country code must be exactly 2 characters"),
   emoji: z.string().optional(),
+  // continent: z.string().optional(),
 });
 
 export default function AddCountryForm() {
-  const [AddCountry] = useAddCountryMutation();
+  const [AddCountry] = useAddCountryMutation({
+    refetchQueries: [{query: CountriesDocument}]
+  });
+  // const { data: continentsData } = useContinentsQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -21,6 +26,7 @@ export default function AddCountryForm() {
       name: "",
       code: "",
       emoji: "",
+      // continent: "",
     },
   });
 
@@ -32,6 +38,7 @@ export default function AddCountryForm() {
             name: data.name,
             code: data.code,
             emoji: data.emoji ?? "",
+            // continent: {id: data.continent}
           },
         },
       });
@@ -54,7 +61,7 @@ export default function AddCountryForm() {
               <FormItem>
                 <FormLabel>name</FormLabel>
                 <FormControl>
-                  <Input placeholder="nom" {...field} />
+                  <Input placeholder="name" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -85,6 +92,33 @@ export default function AddCountryForm() {
               </FormItem>
             )}
           />
+
+          {/* no time to finish  */}
+          {/* <FormField
+            control={form.control}
+            name="continent"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>contienent</FormLabel>
+                <Select
+                onValueChange={field.onChange} 
+                defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="select continent"/>
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                    {continentsData?.continents.map((continent) => (
+                      <SelectItem key={continent.id} value={continent.id}>
+                        {continent.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          /> */}
           <div className="w-full md:w-auto flex justify-center md:justify-start">
             <Button type="submit" className="bg-fuchsia-500">
               Submit
